@@ -15,9 +15,11 @@ class Main:
         # parser.add_argument('--MODE', type=str, default='', help='Specify the mode (Possible-modes:- \n (1) wall_on_start  )')
         # parser.add_argument('--TIMER', type=float, default=None, help='Specify the timer duration in only float datatype')
         parser.add_argument('--FOLDER_PATH', type=str, default='/Pictures/dt/wallpapers/',help='Specify the FOLDER_PATH of the git repository in your system')
+        parser.add_argument('--LOG_FOLDER_FULL_PATH',type=str,default='/home/Akash/Pictures/dt/wallpapers/log_lock.txt',help='Specify the path for the log file. (full folder path to the file)')
 
         self.args = parser.parse_args()
         self.full_folder_path = full_folder_path + self.args.FOLDER_PATH
+        self.log_folder_path_full = self.args.LOG_FOLDER_FULL_PATH
         # self.arg_ = (self.args.MODE, self.args.TIMER)
     def GetDarkThemes(self):
         self.DarkThemes_path = self.full_folder_path+"Dark-themes/"
@@ -55,15 +57,15 @@ class Main:
         try:
             return self.GetList_[self.RandomInt]
         except IndexError:
-            return self.GetList_[random.randint(0,10)]
-    def Main(self):
-        return [
-                self.GetRandomNumber(self.GetLightThemes),
-                self.GetRandomNumber(self.GetDarkThemes),
-                self.GetRandomNumber(self.MountainDarkThemes),
-                self.GetRandomNumber(self.MountainLightThemes),
-                self.GetRandomNumber(self.MountainSunsetThemes)
-        ]
+            return self.GetList_[random.randint(0,10)] 
+    def Main(self): 
+        return [ 
+            self.GetRandomNumber(self.GetLightThemes),
+            self.GetRandomNumber(self.GetDarkThemes),
+            self.GetRandomNumber(self.MountainDarkThemes),
+            self.GetRandomNumber(self.MountainLightThemes),
+            self.GetRandomNumber(self.MountainSunsetThemes)
+            ]
     def get_time_period(self, current_time=datetime.datetime.now()):
         hour = current_time.hour
         if 5 <= hour < 10:
@@ -82,36 +84,36 @@ class Main:
         self.MlightThemeran_image = self.image_list[3]
         self.lightThemeran_image = self.image_list[0]
         self.Msunran_image = self.image_list[-1]
-
+        path=self.log_folder_path_full
         if self.random_walls == False:
             if self.get_time_period() == "Sunrise" or self.get_time_period() == "Sunset":
                 os.system('betterlockscreen -u '+ self.full_folder_path + 'Mountain_nature_kinda/mountain_sunset/'+self.Msunran_image)
                 self.Wallpaper_Changed = True
-                with open('log.txt','a') as log:
+                with open(path,'a') as log:
                     log.write(f'Updated the wall {self.Msunran_image} (Msunset) on {datetime.datetime.now()}  \n')
             elif self.get_time_period() == "Noon":
                 ksfja=random.randint(0,1)
                 if ksfja == 0:
                     os.system('betterlockscreen -u '+self.full_folder_path+'Mountain_nature_kinda/Mountain_light/'+self.MlightThemeran_image)
                     self.Wallpaper_Changed = True
-                    with open('log.txt','a') as log:
+                    with open(path,'a') as log:
                         log.write(f'Updated the wall {self.MlightThemeran_image} (Mlight) on {datetime.datetime.now()} \n')
                 elif ksfja == 1:
                     os.system('betterlockscreen -u '+self.full_folder_path+'Light-themes/'+self.lightThemeran_image)
                     self.Wallpaper_Changed = True
-                    with open('log.txt','a') as log:
+                    with open(path,'a') as log:
                         log.write(f'Updated the wall {self.lightThemeran_image} (Light) on {datetime.datetime.now()} \n')
             elif self.get_time_period() == "Night":
                 ksfja=random.randint(0,1)
                 if ksfja == 0:
                     os.system('betterlockscreen -u '+self.full_folder_path+'Mountain_nature_kinda/Mountain_dark/'+self.MdarkThemeran_image)
                     self.Wallpaper_Changed = True
-                    with open('log.txt','a') as log:
+                    with open(path,'a') as log:
                         log.write(f'Updated the wall {self.MdarkThemeran_image} (Mdark) on {datetime.datetime.now()} \n')
                 elif ksfja == 1:
                     os.system('betterlockscreen -u '+self.full_folder_path+'Dark-themes/'+self.darkThemeran_image)
                     self.Wallpaper_Changed = True
-                    with open('log.txt','a') as log:
+                    with open(path,'a') as log:
                         log.write(f'Updated the wall {self.darkThemeran_image} (Dark) on {datetime.datetime.now()} \n')
 if __name__ == "__main__":
     main_Instance = Main()
